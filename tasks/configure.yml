@@ -9,6 +9,38 @@
   register: openvpn_easyrsa_check
   when: openvpn_use_system_easyrsa
 
+- name: Symlink things
+  file:
+    src: "{{ item.path }}"
+    dest: "{{ item.dest }}"
+    state: link
+  with_items:
+    - path: "{{openvpn_etcdir}}/easy-rsa/openssl-1.0.0.cnf"
+      dest: "{{openvpn_etcdir}}/easy-rsa/openssl.cnf"
+    - path: /usr/lib/openvpn/openvpn-plugin-auth-pam.so 
+      dest: /usr/lib/openvpn/openvpn-auth-pam.so
+
+- name: add tun fix for lxc
+  template: src=container-tun.sh.j2 dest={{openvpn_etcdir}}/container-tun.sh mode=0700
+  when: openvpn_lxc_tun_correction
+
+- name: Add systemd service to execute fix
+  ini_file:
+    path: /etc/systemd/system/container-tun.service
+    section: "{{ item.section }}"
+    option: "{{ item.option }}"
+    value: "{{ item.value }}"
+    mode: 0600
+  with_items:
+    - {section: Unit, option: After, value: network.target}
+    - {section: Service, option: ExecStart, value: "/bin/sh {{ openvpn_etcdir }}/container-tun.sh"}
+    - {section: Install, option: WantedBy, value: default.target}
+  when: openvpn_lxc_tun_correction
+
+- name: enable container fix
+  systemd: state=started name=container-tun.service enabled=yes
+  when: openvpn_lxc_tun_correction
+
 - fail:
     msg: >
       EasyRSA 2.x is not present in /usr/share/easy-rsa.

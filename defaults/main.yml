@@ -14,6 +14,7 @@ openvpn_host: "{{inventory_hostname}}"              # The server address
 openvpn_port: 1194
 openvpn_proto: udp
 openvpn_dev: tun
+openvpn_lxc_tun_correction: false
 openvpn_server: 10.8.0.0 255.255.255.0              # Set empty for skip
 openvpn_bridge: {}
 openvpn_max_clients: 100
@@ -46,7 +47,7 @@ openvpn_key_org: Fort-Funston
 openvpn_key_email: me@myhost.mydomain
 openvpn_key_size: 1024
 
-openvpn_clients: [client]                         # Make clients certificate
+openvpn_clients: {}                         # Make clients certificate
 openvpn_clients_revoke: []                        # Revoke clients certificates
 
 # Use PAM authentication
