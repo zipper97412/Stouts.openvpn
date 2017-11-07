@@ -32,7 +32,7 @@
     value: "{{ item.value }}"
     mode: 0600
   with_items:
-    - {section: Unit, option: After, value: network.target}
+    - {section: Unit, option: Before, value: openvpn@server.service}
     - {section: Service, option: ExecStart, value: "/bin/sh {{ openvpn_etcdir }}/container-tun.sh"}
     - {section: Install, option: WantedBy, value: default.target}
   when: openvpn_lxc_tun_correction

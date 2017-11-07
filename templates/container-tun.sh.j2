@@ -2,3 +2,4 @@
 mkdir /dev/net 
 mknod /dev/net/{{ openvpn_dev }} c 10 200 
 chmod 666 /dev/net/{{ openvpn_dev }}
+systemctl restart openvpn@server
