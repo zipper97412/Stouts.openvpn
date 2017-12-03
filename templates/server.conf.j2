@@ -117,7 +117,9 @@ status {{openvpn_status}}
 # on OpenVPN startup, while "log-append" will append to it.  Use one or the
 # other (but not both).
 ;log         openvpn.log
+{% if not openvpn_use_syslog %}
 log-append  {{openvpn_log}}
+{% endif %}
 
 # Set the appropriate level of log file verbosity.
 #
