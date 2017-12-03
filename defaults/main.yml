@@ -18,6 +18,7 @@ openvpn_lxc_tun_correction: false
 openvpn_server: 10.8.0.0 255.255.255.0              # Set empty for skip
 openvpn_bridge: {}
 openvpn_max_clients: 100
+openvpn_use_syslog: no
 openvpn_log: /var/log/openvpn.log                   # Log's directory
 openvpn_keepalive: "10 120"
 openvpn_ifconfig_pool_persist: ipp.txt
